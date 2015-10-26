@@ -7,6 +7,7 @@ CREATE USER has_many_user;
 CREATE DATABASE has_many_blogs OWNER has_many_user;
 
 -- Before each create table statement, add a drop table if exists statement.
+-- In has_many_blogs.sql Create the tables (including any PKs, Indexes, and Constraints that you may need) to fulfill the requirements of the has_many_blogs schema below.
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
@@ -26,20 +27,25 @@ CREATE TABLE posts (
   url varchar(510) NULL DEFAULT NULL,
   content text NULL DEFAULT NULL,
   created_at timestamp NOT NULL DEFAULT now(),
-  updated_at timestamp NOT NULL DEFAULT now()
+  updated_at timestamp NOT NULL DEFAULT now(),
+  users_id REFERENCES users (id)
   );
 
-DROP TABLE IF EXISTS comments (
+DROP TABLE IF EXISTS comments;
+
+CREATE TABLE comments (
   id serial PRIMARY KEY NOT NULL,
   body varchar(510) NULL DEFAULT NULL,
   created_at timestamp NOT NULL DEFAULT now(),
-  updated_at timestamp NOT NULL DEFAULT now()
+  updated_at timestamp NOT NULL DEFAULT now(),
+  users_id REFERENCES users (id),
+  posts_id REFERENCES posts (id)
   );
 
--- In has_many_blogs.sql Create the tables (including any PKs, Indexes, and Constraints that you may need) to fulfill the requirements of the has_many_blogs schema below.
 
 
 -- Create the necessary FKs needed to relate the tables according to the relationship table below.
 
 
 -- Run the provided scripts/blog_data.sql
+\i ./scripts/blog_data.sql;
